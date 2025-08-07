@@ -1,10 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { JSX } from 'react'
 
 export const Route = createFileRoute('/notes')({
-  component: RouteComponent,
+  component: RouteComponent
 })
 
-function RouteComponent(): JSX.Element {
-  return <div>Hello from Notes!</div>
+function RouteComponent(): React.JSX.Element {
+  return <div className="flex flex-1 h-full">Hello from Notes!</div>
 }
