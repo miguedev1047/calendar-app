@@ -1,18 +1,37 @@
-import type { JSX } from 'react'
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { createRootRouteWithContext, Outlet, useRouterState } from '@tanstack/react-router'
+import { ThemeProvider } from '@renderer/components/theme-provider'
+import { Loader } from '@renderer/components/loader'
+import { Toaster } from '@renderer/components/ui/sonner'
+import { QueryClient } from '@tanstack/react-query'
+import { CalenderSidebarWrapper } from '@renderer/components/app-sidebar'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { Header } from '@renderer/components/header'
 
-export const Route = createRootRoute({
+export interface RouterAppContext {
+  queryClient: QueryClient
+}
+
+export const Route = createRootRouteWithContext<RouterAppContext>()({
   component: RootComponent
 })
 
-function RootComponent(): JSX.Element {
+function RootComponent(): React.JSX.Element {
+  const isFetching = useRouterState({ select: (s) => s.isLoading })
   return (
     <>
-      <Header />
-      <Outlet />
-      <TanStackRouterDevtools />
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="dark"
+        disableTransitionOnChange
+        storageKey="vite-ui-theme"
+      >
+        <CalenderSidebarWrapper >
+          {isFetching ? <Loader /> : <Outlet />}
+        </CalenderSidebarWrapper>
+        <Toaster position="bottom-right" />
+        <TanStackRouterDevtools />
+        <ReactQueryDevtools />
+      </ThemeProvider>
     </>
   )
 }
