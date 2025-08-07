@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DayDayIdRouteImport } from './routes/day/day.$id'
 
 const NotesRoute = NotesRouteImport.update({
   id: '/notes',
@@ -29,44 +28,35 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DayDayIdRoute = DayDayIdRouteImport.update({
-  id: '/day/day/$id',
-  path: '/day/day/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/notes': typeof NotesRoute
-  '/day/day/$id': typeof DayDayIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/notes': typeof NotesRoute
-  '/day/day/$id': typeof DayDayIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/notes': typeof NotesRoute
-  '/day/day/$id': typeof DayDayIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/notes' | '/day/day/$id'
+  fullPaths: '/' | '/about' | '/notes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/notes' | '/day/day/$id'
-  id: '__root__' | '/' | '/about' | '/notes' | '/day/day/$id'
+  to: '/' | '/about' | '/notes'
+  id: '__root__' | '/' | '/about' | '/notes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   NotesRoute: typeof NotesRoute
-  DayDayIdRoute: typeof DayDayIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,13 +82,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/day/day/$id': {
-      id: '/day/day/$id'
-      path: '/day/day/$id'
-      fullPath: '/day/day/$id'
-      preLoaderRoute: typeof DayDayIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -106,7 +89,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   NotesRoute: NotesRoute,
-  DayDayIdRoute: DayDayIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
