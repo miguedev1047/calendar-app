@@ -1,4 +1,5 @@
 import { actualMonth, actualYear, actualDay } from '@shared/constants'
+import { format } from 'date-fns'
 import { create } from 'zustand'
 
 interface CalendarState {
@@ -6,9 +7,14 @@ interface CalendarState {
   year: number
   day: number
 
-  strDay: () => string
+  strWeekday: () => string
   strMonth: () => string
   strYear: () => string
+  strDate: () => string
+
+  nextMonth: () => void
+  prevMonth: () => void
+  goToToday: () => void
 
   updateYear: (year: number) => void
   updateMonth: (month: number) => void
@@ -20,17 +26,42 @@ export const useCalendar = create<CalendarState>((set, get) => ({
   day: actualDay,
   year: actualYear,
 
-  strDay: () => {
+  strWeekday: () => {
     const { day, month, year } = get()
-    return new Date(year, month, day).toLocaleString('en-US', { day: '2-digit' })
+    return format(new Date(year, month, day), 'EEEE')
   },
   strMonth: () => {
     const { month, year } = get()
-    return new Date(year, month).toLocaleString('en-US', { month: 'long' })
+    return format(new Date(year, month), 'MMMM')
   },
   strYear: () => {
     const { year, month } = get()
-    return new Date(year, month).toLocaleString('en-US', { year: 'numeric' })
+    return format(new Date(year, month), 'yyyy')
+  },
+  strDate: () => {
+    const { day, month, year } = get()
+    return format(new Date(year, month, day), 'MMMM, yyy')
+  },
+
+  nextMonth: () => {
+    const { month, year } = get()
+    const nextMonth = month + 1
+    const newMonth = nextMonth > 11 ? 0 : nextMonth
+    const newYear = nextMonth > 11 ? year + 1 : year
+
+    set({ month: newMonth, year: newYear })
+  },
+  prevMonth: () => {
+    const { month, year } = get()
+
+    const prevMonth = month - 1
+    const newMonth = prevMonth < 0 ? 11 : prevMonth
+    const newYear = prevMonth < 0 ? year - 1 : year
+
+    set({ month: newMonth, year: newYear })
+  },
+  goToToday: () => {
+    set({ month: actualMonth, year: actualYear, day: actualDay })
   },
 
   updateYear: (year: number) => set({ year }),
