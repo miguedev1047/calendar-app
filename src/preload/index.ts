@@ -1,12 +1,15 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { CreateEvent, DeleteEvent, GetEventByDay, GetEvents, UpdateEvent } from '../shared/models'
 
-// Custom APIs for renderer
-const api = {}
+const api = {
+  getEvents: (...args: Parameters<GetEvents>) => ipcRenderer.invoke('get-events', ...args),
+  getEventByDay: (...args: Parameters<GetEventByDay>) =>ipcRenderer.invoke('get-event-by-day', ...args),
+  createEvent: (...args: Parameters<CreateEvent>) => ipcRenderer.invoke('create-event', ...args),
+  updateEvent: (...args: Parameters<UpdateEvent>) => ipcRenderer.invoke('update-event', ...args),
+  deleteEvent: (...args: Parameters<DeleteEvent>) => ipcRenderer.invoke('delete-event', ...args)
+}
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
