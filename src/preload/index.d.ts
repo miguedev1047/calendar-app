@@ -11,6 +11,10 @@ declare global {
       createEvent: (data: EventSchema) => ResponseProps
       updateEvent: (data: EventSchema) => ResponseProps
       deleteEvent: (data: DeleteEventProps) => ResponseProps
+
+      closeWindow: () => void
+      minimizeWindow: () => void
+      toggleMaximizeWindow: () => void
     }
   }
 }
