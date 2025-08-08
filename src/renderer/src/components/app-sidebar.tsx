@@ -4,7 +4,6 @@ import {
   Sidebar,
   SidebarHeader,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarMenu,
   SidebarMenuItem,
@@ -13,7 +12,7 @@ import {
 } from '@renderer/components/animate-ui/radix/sidebar'
 import { SidebarGroupContent } from '@renderer/components/animate-ui/radix/sidebar'
 import { Calendar } from '@renderer/components/ui/calendar'
-import { Plus } from 'lucide-react'
+import { CalendarIcon, Plus } from 'lucide-react'
 import { Header } from '@renderer/components/header'
 import { useCalendar } from '@renderer/stores/use-calendar'
 import { useDialog } from '@renderer/stores/use-dialog'
@@ -39,7 +38,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>): 
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
-              <h2>Notes Calendar App</h2>
+              <CalendarIcon />
+              <h2 className="text-xl font-black">Notes Calendar</h2>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -47,14 +47,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>): 
       <SidebarContent>
         <SidebarDatePicker />
       </SidebarContent>
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <NewEvent />
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
-      <SidebarRail/>
+      <SidebarRail />
     </Sidebar>
   )
 }
@@ -84,6 +77,9 @@ export function SidebarDatePicker(): React.JSX.Element {
 
   return (
     <SidebarGroup className="px-0">
+      <SidebarGroupContent className="p-2">
+        <NewEvent />
+      </SidebarGroupContent>
       <SidebarGroupContent>
         <Calendar
           onNextClick={handleNextMonth}
