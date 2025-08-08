@@ -34,11 +34,11 @@ export function getCalendar({ opts }: CalendarOptions): CalendarStore[] {
   const lastDay = endOfMonth(firstDay)
 
   const startDayOfWeek = getDay(firstDay)
-  const daysBefore = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1
+  const daysBefore = startDayOfWeek
   const calendarStart = subDays(firstDay, daysBefore)
 
   const endDayOfWeek = getDay(lastDay)
-  const daysAfter = endDayOfWeek === 0 ? 0 : 7 - endDayOfWeek
+  const daysAfter = 6 - endDayOfWeek
   const calendarEnd = addDays(lastDay, daysAfter)
 
   const days = eachDayOfInterval({ start: calendarStart, end: calendarEnd })
