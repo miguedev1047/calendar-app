@@ -1,17 +1,17 @@
-import { Link } from '@tanstack/react-router'
-
+import { ChevronLeft, ChevronRight, Maximize, Minus, X } from 'lucide-react'
 import { SidebarTrigger } from '@renderer/components/animate-ui/radix/sidebar'
 import { Separator } from '@renderer/components/ui/separator'
-import { Button } from '@renderer/components/ui/button'
 import { useCalendar } from '@renderer/stores/use-calendar'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { RippleButton } from '@renderer/components/animate-ui/buttons/ripple-button'
 
 export function Header(): React.JSX.Element {
   const strDate = useCalendar((s) => s.strDate())
-
   const onNextMonth = useCalendar((s) => s.nextMonth)
   const onPrevMonth = useCalendar((s) => s.prevMonth)
   const onGoToToday = useCalendar((s) => s.goToToday)
+  const closeWindow = (): void => window.api.closeWindow()
+  const minimizeWindow = (): void => window.api.minimizeWindow()
+  const toggleMaximizeWindow = (): void => window.api.toggleMaximizeWindow()
 
   return (
     <header className="flex app-region w-full h-16 sticky top-0 bg-background border-b px-4 shrink-0 items-center justify-between gap-2 z-50 [&>*]:app-no-region">
@@ -20,30 +20,35 @@ export function Header(): React.JSX.Element {
 
         <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
 
-        <div className="flex items-center gap-4">
-          <Button onClick={onGoToToday} variant="outline">
-            Today
-          </Button>
-          <div>
-            <Button onClick={onPrevMonth} variant="ghost" size="icon">
-              <ChevronLeft />
-            </Button>
-            <Button onClick={onNextMonth} variant="ghost" size="icon">
-              <ChevronRight />
-            </Button>
-          </div>
-          <h3 className='font-bold'>{strDate}</h3>
-        </div>
+        <RippleButton onClick={onGoToToday} variant="outline">
+          Today
+        </RippleButton>
       </div>
 
-      <div className="flex gap-4">
-        <Link to="/" className="[&.active]:font-bold">
-          Calendar
-        </Link>
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4">
+          <h3 className="font-bold">{strDate}</h3>
+          <div className="flex items-center">
+            <RippleButton onClick={onPrevMonth} variant="ghost" size="icon">
+              <ChevronLeft />
+            </RippleButton>
+            <RippleButton onClick={onNextMonth} variant="ghost" size="icon">
+              <ChevronRight />
+            </RippleButton>
+          </div>
+        </div>
 
-        <Link to="/notes" className="[&.active]:font-bold">
-          Notes
-        </Link>
+        <div className="flex items-center gap-2">
+          <RippleButton onClick={minimizeWindow} size="icon" variant="outline">
+            <Minus />
+          </RippleButton>
+          <RippleButton onClick={toggleMaximizeWindow} size="icon" variant="outline">
+            <Maximize />
+          </RippleButton>
+          <RippleButton onClick={closeWindow} size="icon" variant="outline">
+            <X />
+          </RippleButton>
+        </div>
       </div>
     </header>
   )
