@@ -1,13 +1,29 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import { CreateEvent, DeleteEvent, GetEventByDay, GetEvents, UpdateEvent } from '../shared/models'
+import {
+  CloseWindow,
+  CreateEvent,
+  DeleteEvent,
+  GetEventByDay,
+  GetEvents,
+  MinimizeWindow,
+  ToggleMaximizeWindow,
+  UpdateEvent
+} from '../shared/models'
 
 const api = {
   getEvents: (...args: Parameters<GetEvents>) => ipcRenderer.invoke('get-events', ...args),
-  getEventByDay: (...args: Parameters<GetEventByDay>) =>ipcRenderer.invoke('get-event-by-day', ...args),
+  getEventByDay: (...args: Parameters<GetEventByDay>) =>
+    ipcRenderer.invoke('get-event-by-day', ...args),
   createEvent: (...args: Parameters<CreateEvent>) => ipcRenderer.invoke('create-event', ...args),
   updateEvent: (...args: Parameters<UpdateEvent>) => ipcRenderer.invoke('update-event', ...args),
-  deleteEvent: (...args: Parameters<DeleteEvent>) => ipcRenderer.invoke('delete-event', ...args)
+  deleteEvent: (...args: Parameters<DeleteEvent>) => ipcRenderer.invoke('delete-event', ...args),
+
+  closeWindow: (...args: Parameters<CloseWindow>) => ipcRenderer.send('close-window', ...args),
+  minimizeWindow: (...args: Parameters<MinimizeWindow>) =>
+    ipcRenderer.send('minimize-window', ...args),
+  toggleMaximizeWindow: (...args: Parameters<ToggleMaximizeWindow>) =>
+    ipcRenderer.send('toggle-maximize-window', ...args)
 }
 
 if (process.contextIsolated) {
