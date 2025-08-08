@@ -10,7 +10,7 @@ export const actualStrWeekday = format(now, 'EEEE')
 export const actualStrMonth = format(now, 'MMMM')
 export const actualStrYear = format(now, 'yyyy')
 
-export const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+export const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 export const TW_COLORS = [
   { key: 'PINK', value: 'bg-pink-300' },
