@@ -6,35 +6,51 @@ import {
   DialogFooter,
   DialogClose
 } from '@renderer/components/animate-ui/radix/dialog'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@renderer/components/ui/form'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@renderer/components/ui/form'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from '@renderer/components/ui/select'
 import { useMemo, useTransition } from 'react'
-import { Button } from '@renderer/components/ui/button'
 import { useDialog } from '@renderer/stores/use-dialog'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Input } from '@renderer/components/ui/input'
 import { Textarea } from '@renderer/components/ui/textarea'
 import { Trash2 } from 'lucide-react'
-import { eventSchema, EventSchema } from '@shared/schemas'
 import { toast } from 'sonner'
-import { useQueryClient } from '@tanstack/react-query'
 import { randomColor } from '@renderer/helpers/get-random-color'
-import { ColorUndefined, DateUndefined, StringUndefined } from '@shared/types'
 import { getDateFromCalendarData } from '@renderer/helpers/get-date-from-calendar'
 import { DatePicker } from '@renderer/components/ui/date-picker'
 import { formatUnixDate } from '@renderer/helpers/format-date'
+import { useEvents } from '@renderer/stores/use-events'
+import { TW_COLORS } from '@renderer/components/event-calendar/constants'
+import { cn } from '@renderer/lib/utils'
+import { eventSchema, EventSchema } from '@renderer/components/event-calendar/schemas'
+import { RippleButton } from '../animate-ui/buttons/ripple-button'
 
 export function EventDialog(): React.JSX.Element {
   const calendarData = useDialog((s) => s.calendarData)
   const openDialog = useDialog((s) => s.openDialog)
   const isOpen = useDialog((s) => s.isOpen)
   const isEditing = useDialog((s) => s.mode === 'edit')
+  const keyDate = formatUnixDate(calendarData?.date)
 
   const handleClick = (): void => {
     openDialog({ isOpen: !isOpen, mode: 'create' })
   }
-
-  const keyDate = formatUnixDate(calendarData?.date)
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClick}>
@@ -50,11 +66,11 @@ export function EventDialog(): React.JSX.Element {
 
           <div className="flex items-center gap-2 flex-1 justify-end">
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <RippleButton variant="outline">Cancel</RippleButton>
             </DialogClose>
-            <Button form="event-form" type="submit">
+            <RippleButton form="event-form" type="submit">
               Save
-            </Button>
+            </RippleButton>
           </div>
         </DialogFooter>
       </DialogContent>
@@ -63,27 +79,27 @@ export function EventDialog(): React.JSX.Element {
 }
 
 export function EventForm(): React.JSX.Element {
-  const queryClient = useQueryClient()
-
+  const addEvent = useEvents((s) => s.addEvent)
+  const updateEvent = useEvents((s) => s.updateEvent)
   const calendarData = useDialog((s) => s.calendarData)
   const eventData = useDialog((s) => s.eventData)
-
   const isEditing = useDialog((s) => s.mode === 'edit')
   const closeDialog = useDialog((s) => s.closeDialog)
-
   const calendarDate = getDateFromCalendarData(calendarData)
-
   const defaultColor = useMemo(() => randomColor(), [])
+
+  const getField = <T,>(field: keyof EventSchema, fallback: T): T =>
+    isEditing ? ((eventData?.[field] as T) ?? fallback) : fallback
 
   const form = useForm<EventSchema>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      id: isEditing ? eventData?.id : undefined,
-      title: isEditing ? (eventData?.title as StringUndefined) : '',
-      description: isEditing ? (eventData?.description as StringUndefined) : '',
-      startDate: isEditing ? (eventData?.startDate as DateUndefined) : calendarDate,
-      endDate: isEditing ? (eventData?.endDate as DateUndefined) : calendarDate,
-      color: isEditing ? (eventData?.color as ColorUndefined) : defaultColor
+      id: getField('id', crypto.randomUUID()),
+      title: getField('title', '(no title)'),
+      description: getField('description', ''),
+      startDate: new Date(getField('startDate', calendarDate)),
+      endDate: new Date(getField('endDate', calendarDate)),
+      color: getField('color', defaultColor)
     }
   })
 
@@ -92,19 +108,13 @@ export function EventForm(): React.JSX.Element {
   const handleSubmit = form.handleSubmit(async (values) => {
     if (isSubmitting) return
 
-    const action = isEditing ? window.api.updateEvent : window.api.createEvent
-    const actionLabel = isEditing ? 'editing' : 'creating'
+    const action = isEditing ? updateEvent : addEvent
 
-    const { ok } = await action(values)
+    action(values)
 
-    if (ok) {
-      form.reset()
-      closeDialog()
-      toast.success(`Event ${isEditing ? 'edited' : 'created'} successfully!`)
-      queryClient.invalidateQueries()
-    } else {
-      toast.error(`An error occurred while ${actionLabel} the event!`)
-    }
+    form.reset()
+    closeDialog()
+    toast.success(`Event ${isEditing ? 'edited' : 'created'} successfully!`)
   })
 
   return (
@@ -150,6 +160,7 @@ export function EventForm(): React.JSX.Element {
                   mode="start"
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -169,6 +180,35 @@ export function EventForm(): React.JSX.Element {
                   mode="end"
                 />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="color"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Colors</FormLabel>
+              <Select value={field.value} onValueChange={field.onChange} disabled={isSubmitting}>
+                <FormControl>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Pick a color" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Colors</SelectLabel>
+                    {TW_COLORS.map((item) => (
+                      <SelectItem key={item.key} value={item.key}>
+                        <div className={cn('size-4 rounded-full', item.value)} />
+                        <span className="capitalize">{item.key.toLowerCase()}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -179,10 +219,10 @@ export function EventForm(): React.JSX.Element {
 
 export function EventDelete(): React.JSX.Element | null {
   const [isPending, startTransition] = useTransition()
-  const queryClient = useQueryClient()
   const eventData = useDialog((s) => s.eventData)
   const closeDialog = useDialog((s) => s.closeDialog)
   const isEditing = useDialog((s) => s.mode === 'edit')
+  const removeEvent = useEvents((s) => s.removeEvent)
 
   if (!isEditing) return null
 
@@ -190,22 +230,16 @@ export function EventDelete(): React.JSX.Element | null {
     startTransition(async () => {
       if (!eventData?.id) return
 
-      const { ok } = await window.api.deleteEvent({ id: eventData.id })
+      removeEvent(eventData.id)
 
-      if (ok) {
-        toast.success('Event deleted successfully!')
-        closeDialog()
-        queryClient.invalidateQueries()
-        return
-      }
-
-      toast.error('An ocurred a error while deleting event!')
+      toast.success('Event deleted successfully!')
+      closeDialog()
     })
   }
 
   return (
-    <Button size="icon" variant="outline" onClick={handleDeleteEvent} disabled={isPending}>
+    <RippleButton size="icon" variant="outline" onClick={handleDeleteEvent} disabled={isPending}>
       <Trash2 />
-    </Button>
+    </RippleButton>
   )
 }
