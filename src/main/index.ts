@@ -21,7 +21,7 @@ function createWindow(): void {
     frame: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
+      preload: join(__dirname, '../preload/index.mjs'),
       sandbox: false
     }
   })
@@ -44,7 +44,9 @@ function createWindow(): void {
 
 app.on('ready', () => {
   ipcMain.handle('get-events', (_event, ...args: Parameters<GetEvents>) => getEvents(...args))
-  ipcMain.handle('get-event-by-day', (_event, ...args: Parameters<GetEventByDay>) => getEventByDay(...args))
+  ipcMain.handle('get-event-by-day', (_event, ...args: Parameters<GetEventByDay>) =>
+    getEventByDay(...args)
+  )
   ipcMain.handle('create-event', (_event, ...args: Parameters<CreateEvent>) => createEvent(...args))
   ipcMain.handle('update-event', (_event, ...args: Parameters<UpdateEvent>) => updateEvent(...args))
   ipcMain.handle('delete-event', (_event, ...args: Parameters<DeleteEvent>) => deleteEvent(...args))
