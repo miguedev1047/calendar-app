@@ -17,12 +17,14 @@ import { CalendarEventModel } from '@renderer/types'
 import { addDays, differenceInDays, format, getUnixTime, startOfDay } from 'date-fns'
 import { useId, useState } from 'react'
 import { PreviewEvent } from '@renderer/components/event-calendar/preview-event'
+import { useCalendar } from '@renderer/stores/use-calendar'
 
 export function CalendarDndProvider({ children }: React.PropsWithChildren): React.JSX.Element {
   const [activeEvent, setActiveEvent] = useState<CalendarEventModel | null>(null)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const DndContextId = useId()
   const updateEvent = useEvents((s) => s.updateEvent)
+  const view = useCalendar((s) => s.view)
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -98,17 +100,36 @@ export function CalendarDndProvider({ children }: React.PropsWithChildren): Reac
   }
 
   return (
-    <DndContext
-      id={DndContextId}
-      sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragEnd={onDragEnd}
-      onDragStart={onDragStart}
-    >
-      {children}
-      <DragOverlay adjustScale={false} dropAnimation={null}>
-        {activeEvent && activeId && <PreviewEvent event={activeEvent} />}
-      </DragOverlay>
-    </DndContext>
+    <>
+      {view !== 'month' && (
+        <DndContext
+          id={DndContextId}
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragEnd={onDragEnd}
+          onDragStart={onDragStart}
+        >
+          {children}
+          <DragOverlay adjustScale={false} dropAnimation={null}>
+            {activeEvent && activeId && <PreviewEvent event={activeEvent} />}
+          </DragOverlay>
+        </DndContext>
+      )}
+
+      {view !== 'week' && (
+        <DndContext
+          id={DndContextId}
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragEnd={onDragEnd}
+          onDragStart={onDragStart}
+        >
+          {children}
+          <DragOverlay adjustScale={false} dropAnimation={null}>
+            {activeEvent && activeId && <PreviewEvent draggable event={activeEvent} />}
+          </DragOverlay>
+        </DndContext>
+      )}
+    </>
   )
 }

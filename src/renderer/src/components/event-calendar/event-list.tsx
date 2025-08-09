@@ -16,10 +16,11 @@ import { useEvents } from '@renderer/stores/use-events'
 import { filterEventsByDate } from '@renderer/helpers/filter-events'
 import { format } from 'date-fns'
 import { useDialog } from '@renderer/stores/use-dialog'
-import { getEventColor } from '@renderer/components/event-calendar/utils'
+import { getEventColor, getNormalColor } from '@renderer/components/event-calendar/utils'
 import { Button } from '@renderer/components/ui/button'
 import { PreviewEvent } from '@renderer/components/event-calendar/preview-event'
 import { useCallback, useMemo } from 'react'
+import { useIsMobile } from '@renderer/hooks/use-mobile'
 
 const MAX_VISIBLE_EVENTS = 3
 
@@ -53,13 +54,16 @@ export function useEventListLogic(date: Date): {
 }
 
 export function DisabledEventItem({ event, onClick }: DisabledEventItemProps): React.JSX.Element {
+  const isMobile = useIsMobile()
+
   return (
     <button
       key={event.id}
       onClick={(e) => onClick(e, event)}
       className={cn(
-        getEventColor(event.color),
-        'flex items-center overflow-hidden not-visited:w-full h-6 p-1 text-left rounded relative ps-8'
+        'max-md:size-2 max-md:rounded-full flex items-center w-full h-6 p-1 text-left rounded relative',
+        isMobile && getNormalColor(event.color),
+        !isMobile && getEventColor(event.color)
       )}
     />
   )
@@ -99,16 +103,18 @@ export function EventList(props: EventListProps): React.JSX.Element | null {
   const visibleEvents = filteredEvents.slice(0, MAX_VISIBLE_EVENTS)
 
   return (
-    <div className={cn('space-y-1 min-h-24')}>
-      {visibleEvents.map((event) => (
-        <EventListItem
-          key={event.id}
-          event={event}
-          calendar={calendar}
-          index={index}
-          onClick={handleUpdateEvent}
-        />
-      ))}
+    <div className={cn('flex flex-col justify-between max-md:space-y-2 min-md:space-y-1 sm:min-h-12 md:min-h-24')}>
+      <div className="max-md:flex max-md:gap-1 max-md:items-start min-md:space-y-1">
+        {visibleEvents.map((event) => (
+          <EventListItem
+            key={event.id}
+            event={event}
+            calendar={calendar}
+            index={index}
+            onClick={handleUpdateEvent}
+          />
+        ))}
+      </div>
 
       <SeeMore
         calendar={calendar}
@@ -135,9 +141,9 @@ export function SeeMore(props: SeeMoreProps): React.JSX.Element | null {
           variant="ghost"
           className="h-6 w-full rounded justify-start p-1"
         >
-          <span className="flex text-muted-foreground text-xs">
-            +{totalEvents - 3} more
-          </span>
+          <p className="flex text-muted-foreground text-xs">
+            +{totalEvents - MAX_VISIBLE_EVENTS} more...
+          </p>
         </Button>
       </PopoverTrigger>
       <PopoverContent onClick={(e) => e.stopPropagation()}>

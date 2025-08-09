@@ -26,6 +26,7 @@ export type EventListItemProps = {
 
 export type EventActiveProps = {
   event: CalendarEventModel
+  draggable?: boolean
   onClick?: (e: React.MouseEvent<HTMLButtonElement>, event: CalendarEventModel) => void
 }
 

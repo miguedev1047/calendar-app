@@ -8,9 +8,14 @@ import { useDraggable } from '@dnd-kit/core'
 import { formatUnixDate } from '@renderer/helpers/format-date'
 import { cn } from '@renderer/lib/utils'
 import { format } from 'date-fns'
-import { getEventColor, getShadowColor } from '@renderer/components/event-calendar/utils'
+import {
+  getEventColor,
+  getNormalColor,
+  getShadowColor
+} from '@renderer/components/event-calendar/utils'
 import { memo } from 'react'
 import { CalendarStore } from '@renderer/helpers/get-calendar'
+import { useIsMobile } from '@renderer/hooks/use-mobile'
 
 export const MemoizedBaseEventItem = memo(BaseEventItem)
 
@@ -23,16 +28,13 @@ function useEventState(
   isPastEvent: boolean
 } {
   const { startDate } = event
-
   const currentCalendarDate = calendar[index]
   const currentDate = format(currentCalendarDate.date, 'yyyy-MM-dd')
   const eventStartDate = format(startDate!, 'yyyy-MM-dd')
-
   const disabled = eventStartDate !== currentDate
   const unixStartDate = formatUnixDate(startDate ?? new Date())
   const todayDate = formatUnixDate(new Date())
   const isPastEvent = unixStartDate < todayDate
-
   return { disabled, isPastEvent }
 }
 
@@ -58,14 +60,16 @@ export function EventButton({
   onClick
 }: EventButtonProps): React.JSX.Element {
   const { title, color } = event
+  const isMobile = useIsMobile()
 
   return (
     <button
       onClick={(e) => onClick?.(e, event)}
       disabled={disabled}
       className={cn(
-        'flex items-center w-full h-6 p-1 text-left rounded relative',
-        getEventColor(color),
+        'max-md:size-2 max-md:rounded-full flex items-center w-full h-6 p-1 text-left rounded relative max-md:p-0',
+        isMobile && getNormalColor(color),
+        !isMobile && getEventColor(color),
         isDragging && getShadowColor(color)
       )}
     >
@@ -73,7 +77,7 @@ export function EventButton({
         data-past-date={isPastEvent}
         data-hidden={disabled}
         className={cn(
-          'text-xs line-clamp-1 font-semibold',
+          'text-xs line-clamp-1 font-semibold max-md:hidden',
           'data-[past-date=true]:line-through data-[hidden=true]:hidden'
         )}
       >

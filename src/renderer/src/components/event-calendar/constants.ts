@@ -56,6 +56,53 @@ export const TW_COLORS = [
   }
 ] as const
 
+export const TW_NORMAL_COLORS = [
+  {
+    key: 'PINK',
+    value: 'bg-pink-500 hover:bg-pink-500/90 text-pink-950/80'
+  },
+  {
+    key: 'FUCHSIA',
+    value: 'bg-fuchsia-500 hover:bg-fuchsia-500/90 text-fuchsia-950/80'
+  },
+  {
+    key: 'PURPLE',
+    value: 'bg-purple-500 hover:bg-purple-500/90 text-purple-950/80'
+  },
+  {
+    key: 'VIOLET',
+    value: 'bg-violet-500 hover:bg-violet-500/90 text-violet-950/80'
+  },
+  {
+    key: 'INDIGO',
+    value: 'bg-indigo-500 hover:bg-indigo-500/90 text-indigo-950/80'
+  },
+  {
+    key: 'BLUE',
+    value: 'bg-blue-500 hover:bg-blue-500/90 text-blue-950/80'
+  },
+  {
+    key: 'CYAN',
+    value: 'bg-cyan-200 hover:bg-cyan-500/90 text-cyan-950/80'
+  },
+  {
+    key: 'GREEN',
+    value: 'bg-green-500 hover:bg-green-500/90 text-green-950/80'
+  },
+  {
+    key: 'YELLOW',
+    value: 'bg-yellow-500 hover:bg-yellow-500/90 text-yellow-950/80'
+  },
+  {
+    key: 'ORANGE',
+    value: 'bg-orange-500 hover:bg-orange-500/90 text-orange-950/80'
+  },
+  {
+    key: 'RED',
+    value: 'bg-red-500 hover:bg-red-500/90 text-red-950/80'
+  }
+] as const
+
 export const TW_SHADOWS = [
   {
     key: 'PINK',
