@@ -155,7 +155,7 @@ function Calendar({
             <ChevronDownIcon className={cn("size-4", className)} {...props} />
           )
         },
-        DayButton: CalendarStoreButton,
+        DayButton: CalendarPropsButton,
         WeekNumber: ({ children, ...props }) => {
           return (
             <td {...props}>
@@ -172,7 +172,7 @@ function Calendar({
   )
 }
 
-function CalendarStoreButton({
+function CalendarPropsButton({
   className,
   day,
   modifiers,
@@ -210,4 +210,4 @@ function CalendarStoreButton({
   )
 }
 
-export { Calendar, CalendarStoreButton }
+export { Calendar, CalendarPropsButton }

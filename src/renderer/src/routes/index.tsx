@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { EventDialog } from '@renderer/components/event-calendar/event-dialog'
-import { SquareList } from '@renderer/components/event-calendar/square-list'
+import { EventDialog } from '@renderer/components/event-calendar/components/event-dialog'
+import { SquareList } from '@renderer/components/event-calendar/components/square-list'
 
 export const Route = createFileRoute('/')({
   component: Index

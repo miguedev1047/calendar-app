@@ -1,5 +1,5 @@
 import { CalendarEventModel } from '@renderer/types'
-import { getUnixTime } from 'date-fns'
+import { getUnixTime, startOfDay } from 'date-fns'
 
 interface FilterEventsByDate {
   opts: {
@@ -17,7 +17,7 @@ export function filterEventsByDate(FilterEventsByDate: FilterEventsByDate): Cale
 
   return events.filter(
     (evt) =>
-      getUnixTime(evt.startDate ?? today) <= unixTime &&
-      getUnixTime(evt.endDate ?? today) >= unixTime
+      getUnixTime(startOfDay(evt.startDate ?? today)) <= unixTime &&
+      getUnixTime(startOfDay(evt.endDate ?? today)) >= unixTime
   )
 }
