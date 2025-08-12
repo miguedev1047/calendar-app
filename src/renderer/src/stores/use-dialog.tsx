@@ -1,11 +1,11 @@
-import { CalendarStore } from '@renderer/helpers/get-calendar'
+import { CalendarBase } from '@renderer/components/event-calendar/types'
 import { CalendarEventModel } from '@renderer/types'
 import { create } from 'zustand'
 
 type Mode = 'create' | 'edit' | null
 
 interface DialogData {
-  calendar?: CalendarStore | null
+  calendar?: CalendarBase | null
   event?: CalendarEventModel | null
   mode: Mode
   isOpen: boolean
@@ -14,11 +14,11 @@ interface DialogData {
 interface DialogState {
   isOpen: boolean
   mode: Mode
-  calendarData: CalendarStore | null
+  calendarData: CalendarBase | null
   eventData: CalendarEventModel | null
   openDialog: (params: DialogData) => void
   closeDialog: () => void
-  setCalendarData: (day: CalendarStore | null) => void
+  setCalendarData: (day: CalendarBase | null) => void
   setEventData: (event: CalendarEventModel | null) => void
 }
 

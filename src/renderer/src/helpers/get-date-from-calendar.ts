@@ -1,8 +1,11 @@
-import { CalendarStore } from './get-calendar'
+import { CalendarProps } from '@renderer/components/event-calendar/types'
+import { getHours, getMinutes } from 'date-fns'
 
-export function getDateFromCalendarData(data?: CalendarStore | null): Date {
+export function getDateFromCalendarData(data?: CalendarProps | null): Date {
   const today = new Date()
-  today.setHours(0, 0, 0, 0)
+
+  const hour = getHours(today)
+  const minute = getMinutes(today)
 
   if (
     !data?.year ||
@@ -13,5 +16,6 @@ export function getDateFromCalendarData(data?: CalendarStore | null): Date {
     return today
   }
 
-  return new Date(data.year, data.month, data.day)
+  const newDate = new Date(data.year, data.month, data.day, hour, minute)
+  return newDate
 }

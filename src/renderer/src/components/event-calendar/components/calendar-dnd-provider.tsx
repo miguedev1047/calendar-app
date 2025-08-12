@@ -16,33 +16,20 @@ import { useEvents } from '@renderer/stores/use-events'
 import { CalendarEventModel } from '@renderer/types'
 import { addDays, differenceInDays, format, getUnixTime, startOfDay } from 'date-fns'
 import { useId, useState } from 'react'
-import { PreviewEvent } from '@renderer/components/event-calendar/preview-event'
-import { useCalendar } from '@renderer/stores/use-calendar'
+import { EventButton } from '@renderer/components/event-calendar/components/event-button'
+import { MIN_DAY_DIFF } from '@renderer/components/event-calendar/constants'
+
 
 export function CalendarDndProvider({ children }: React.PropsWithChildren): React.JSX.Element {
   const [activeEvent, setActiveEvent] = useState<CalendarEventModel | null>(null)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const DndContextId = useId()
   const updateEvent = useEvents((s) => s.updateEvent)
-  const view = useCalendar((s) => s.view)
 
   const sensors = useSensors(
-    useSensor(MouseSensor, {
-      activationConstraint: {
-        distance: 5
-      }
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 250,
-        tolerance: 5
-      }
-    }),
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 5
-      }
-    })
+    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } }),
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   )
 
   const onDragStart = (event: DragStartEvent): void => {
@@ -68,25 +55,21 @@ export function CalendarDndProvider({ children }: React.PropsWithChildren): Reac
     if (over.data.current || active.data.current) {
       const originalStart = startOfDay(active.data.current?.startDate as Date)
       const originalEnd = startOfDay(active.data.current?.endDate as Date)
-      const duration = differenceInDays(originalEnd, originalStart)
+      const daysDif = differenceInDays(originalEnd, originalStart)
 
       const newStart = startOfDay(over.data.current as Date)
       const oldStart = startOfDay(active.data.current?.startDate as Date)
 
       if (getUnixTime(newStart) !== getUnixTime(oldStart)) {
-        const newEnd = addDays(newStart, duration)
+        const newEnd = addDays(newStart, daysDif)
 
-        const updatedEvent = {
-          ...activeEvent,
-          startDate: newStart,
-          endDate: newEnd
-        }
+        const updatedEvent = { ...activeEvent, startDate: newStart, endDate: newEnd }
 
         toast(`Event "${updatedEvent.title}" moved!`, {
           description() {
             return (
               <p className="text-muted-foreground/80">
-                {duration > 0
+                {daysDif > MIN_DAY_DIFF
                   ? `${format(newStart, 'PPP')} → ${format(newEnd, 'PPP')}`
                   : `${format(newStart, 'PPP')}`}
               </p>
@@ -100,36 +83,17 @@ export function CalendarDndProvider({ children }: React.PropsWithChildren): Reac
   }
 
   return (
-    <>
-      {view !== 'month' && (
-        <DndContext
-          id={DndContextId}
-          sensors={sensors}
-          collisionDetection={closestCorners}
-          onDragEnd={onDragEnd}
-          onDragStart={onDragStart}
-        >
-          {children}
-          <DragOverlay adjustScale={false} dropAnimation={null}>
-            {activeEvent && activeId && <PreviewEvent event={activeEvent} />}
-          </DragOverlay>
-        </DndContext>
-      )}
-
-      {view !== 'week' && (
-        <DndContext
-          id={DndContextId}
-          sensors={sensors}
-          collisionDetection={closestCorners}
-          onDragEnd={onDragEnd}
-          onDragStart={onDragStart}
-        >
-          {children}
-          <DragOverlay adjustScale={false} dropAnimation={null}>
-            {activeEvent && activeId && <PreviewEvent draggable event={activeEvent} />}
-          </DragOverlay>
-        </DndContext>
-      )}
-    </>
+    <DndContext
+      id={DndContextId}
+      sensors={sensors}
+      collisionDetection={closestCorners}
+      onDragEnd={onDragEnd}
+      onDragStart={onDragStart}
+    >
+      {children}
+      <DragOverlay adjustScale={false} dropAnimation={null}>
+        {activeEvent && activeId && <EventButton responsiveSize='dot' event={activeEvent} />}
+      </DragOverlay>
+    </DndContext>
   )
 }

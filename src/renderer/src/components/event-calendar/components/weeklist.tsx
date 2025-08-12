@@ -1,6 +1,5 @@
 import { daysOfWeek } from '@shared/constants'
 
-
 export function WeekList(): React.JSX.Element {
   return (
     <div className="grid grid-cols-7 gap-4">

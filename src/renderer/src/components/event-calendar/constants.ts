@@ -1,4 +1,15 @@
-export const TW_COLORS = [
+export const MIN_DAY_DIFF = 0
+
+export const STAR_HOUR = 0
+export const END_HOUR = 24
+
+export const DEFAULT_START_HOUR = { hour: 9, minute: 0 }
+export const DEFAULT_END_HOUR = { hour: 11, minute: 0 }
+
+export const MIN_VISIBLE_EVENTS = 0
+export const MAX_VISIBLE_EVENTS = 3
+
+export const TW_EVENT_COLORS = [
   {
     key: 'PINK',
     value:
