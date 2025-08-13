@@ -6,13 +6,7 @@ import {
   DialogFooter,
   DialogClose
 } from '@renderer/components/animate-ui/radix/dialog'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from '@renderer/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@renderer/components/ui/form'
 import {
   Select,
   SelectContent,
@@ -46,6 +40,7 @@ import { RippleButton } from '@renderer/components/animate-ui/buttons/ripple-but
 import { TimeInput } from '@renderer/components/ui/time-input'
 import { TimeValue } from 'react-aria-components'
 import { Alert, AlertTitle } from '@renderer/components/ui/alert'
+import { newDate } from '@renderer/helpers/new-date'
 
 export function EventDialog(): React.JSX.Element {
   const calendarData = useDialog((s) => s.calendarData)
@@ -91,23 +86,28 @@ export function EventForm(): React.JSX.Element {
   const eventData = useDialog((s) => s.eventData)
   const isEditing = useDialog((s) => s.mode === 'edit')
   const closeDialog = useDialog((s) => s.closeDialog)
+
   const calendarDate = getDateFromCalendarData(calendarData)
   const defaultColor = useMemo(() => randomColor(), [])
 
-  const getField = <T,>(field: keyof EventSchema, fallback: T): T =>
-    isEditing ? ((eventData?.[field] as T) ?? fallback) : fallback
+  const getFieldValue = <T,>(field: keyof EventSchema, fallback: T): T => {
+    if (isEditing && eventData?.[field] !== undefined) {
+      return eventData[field] as T
+    }
+    return fallback
+  }
 
   const form = useForm<EventSchema>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      id: getField('id', crypto.randomUUID()),
-      title: getField('title', '(no title)'),
-      description: getField('description', ''),
-      startTime: getField('startTime', DEFAULT_START_HOUR),
-      endTime: getField('endTime', DEFAULT_END_HOUR),
-      startDate: new Date(getField('startDate', calendarDate)),
-      endDate: new Date(getField('endDate', calendarDate)),
-      color: getField('color', defaultColor)
+      id: getFieldValue('id', crypto.randomUUID()),
+      title: getFieldValue('title', '(no title)'),
+      description: getFieldValue('description', ''),
+      startTime: getFieldValue('startTime', DEFAULT_START_HOUR),
+      endTime: getFieldValue('endTime', DEFAULT_END_HOUR),
+      startDate: newDate(getFieldValue('startDate', eventData?.startDate ?? calendarDate)),
+      endDate: newDate(getFieldValue('endDate', eventData?.endDate ?? calendarDate)),
+      color: getFieldValue('color', defaultColor)
     }
   })
 

@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NotesRouteImport } from './routes/notes'
+import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as IndexRouteImport } from './routes/index'
 
 const NotesRoute = NotesRouteImport.update({
   id: '/notes',
   path: '/notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgendaRoute = AgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,27 +31,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agenda': typeof AgendaRoute
   '/notes': typeof NotesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agenda': typeof AgendaRoute
   '/notes': typeof NotesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/agenda': typeof AgendaRoute
   '/notes': typeof NotesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/notes'
+  fullPaths: '/' | '/agenda' | '/notes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/notes'
-  id: '__root__' | '/' | '/notes'
+  to: '/' | '/agenda' | '/notes'
+  id: '__root__' | '/' | '/agenda' | '/notes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AgendaRoute: typeof AgendaRoute
   NotesRoute: typeof NotesRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/notes'
       fullPath: '/notes'
       preLoaderRoute: typeof NotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agenda': {
+      id: '/agenda'
+      path: '/agenda'
+      fullPath: '/agenda'
+      preLoaderRoute: typeof AgendaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgendaRoute: AgendaRoute,
   NotesRoute: NotesRoute,
 }
 export const routeTree = rootRouteImport

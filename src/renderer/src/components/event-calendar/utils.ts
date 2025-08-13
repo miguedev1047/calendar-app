@@ -20,7 +20,12 @@ import {
   isBefore,
   startOfDay
 } from 'date-fns'
-import { ExpiredEvent, TwEnums, CalendarOptions, Months } from '@renderer/components/event-calendar/types'
+import {
+  ExpiredEvent,
+  TwEnums,
+  CalendarOptions,
+  Months
+} from '@renderer/components/event-calendar/types'
 import { mapDateToCalendarBase } from '@renderer/components/event-calendar/helpers'
 
 export function getEventColor(color: TwEnums | undefined): string | undefined {
