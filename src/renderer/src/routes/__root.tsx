@@ -5,8 +5,8 @@ import { Toaster } from '@renderer/components/ui/sonner'
 import { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { EventDialog } from '@renderer/components/event-calendar'
 import { CalenderSidebarWrapper } from '@renderer/components/sidebar'
+import { EventDialog } from '@renderer/components/event-calendar/components/shared'
 
 export interface RouterAppContext {
   queryClient: QueryClient

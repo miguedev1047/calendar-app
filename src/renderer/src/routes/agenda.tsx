@@ -1,3 +1,4 @@
+import { AgendaGroupList } from '@renderer/components/event-calendar/components/agenda'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/agenda')({
@@ -5,5 +6,10 @@ export const Route = createFileRoute('/agenda')({
 })
 
 function RouteComponent(): React.JSX.Element {
-  return <div className="flex flex-1 h-full">Hello from Agenda!</div>
+  return (
+    <div className="flex flex-1 flex-col space-y-4 h-full">
+      <h2 className="text-2xl font-bold">Agenda</h2>
+      <AgendaGroupList />
+    </div>
+  )
 }
