@@ -1,11 +1,17 @@
 import { cn } from '@renderer/lib/utils'
 import { useDialog } from '@renderer/stores/use-dialog'
-import { EventListProps } from '@renderer/types'
-import { EventList } from '@renderer/components/event-calendar/components/event-list'
+import { EventList } from '@renderer/components/event-calendar/components/calendar'
 import { useDroppable } from '@dnd-kit/core'
 import { format } from 'date-fns'
+import { CalendarProps } from '@renderer/components/event-calendar/types'
 
-export function SquareItem(props: EventListProps): React.JSX.Element {
+export type SquareItemProps = {
+  data: CalendarProps
+  index: number
+  calendar: CalendarProps[]
+}
+
+export function SquareItem(props: SquareItemProps): React.JSX.Element {
   const { data } = props
   const { today, date, day, inCurrentMonth } = data
 

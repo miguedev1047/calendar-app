@@ -1,10 +1,21 @@
-import { BaseEventItemProps, EventItemWrapperProps } from '@renderer/types'
-import { useDraggable } from '@dnd-kit/core'
+import { CalendarEventModel } from '@renderer/types'
+import { DraggableAttributes, useDraggable } from '@dnd-kit/core'
+import { Transform } from '@dnd-kit/utilities'
 import { memo } from 'react'
-import { EventButton } from '@renderer/components/event-calendar/components/event-button'
+import { EventButton } from '@renderer/components/event-calendar/components/calendar/event-button'
 import { useEventState } from '@renderer/components/event-calendar/hooks'
+import { CalendarProps } from '@renderer/components/event-calendar/types'
+import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 
 export const MemoizedBaseEventItem = memo(BaseEventItem)
+
+export type EventItemWrapperProps = {
+  children: React.ReactNode
+  setNodeRef: (element: HTMLElement | null) => void
+  attributes: DraggableAttributes
+  listeners: SyntheticListenerMap | undefined
+  transform: Transform | null
+}
 
 export function EventItemWrapper(props: EventItemWrapperProps): React.JSX.Element {
   const { children, attributes, listeners, setNodeRef, transform } = props
@@ -18,6 +29,13 @@ export function EventItemWrapper(props: EventItemWrapperProps): React.JSX.Elemen
       {children}
     </div>
   )
+}
+
+export type BaseEventItemProps = {
+  event: CalendarEventModel
+  calendar: CalendarProps[]
+  index: number
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>, event: CalendarEventModel) => void
 }
 
 export function BaseEventItem(props: BaseEventItemProps): React.JSX.Element {

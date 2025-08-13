@@ -1,5 +1,8 @@
 import { isSameDay } from 'date-fns'
-import { CheckCurrentDay } from '@renderer/components/event-calendar/types'
+
+export type CheckCurrentDay = {
+  opts: { dayToCheck: number; currentMonth: number; currentYear: number }
+}
 
 export function checkCurrentDay({ opts }: CheckCurrentDay): boolean {
   const { dayToCheck, currentMonth, currentYear } = opts

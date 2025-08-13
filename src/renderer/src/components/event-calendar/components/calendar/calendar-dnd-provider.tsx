@@ -16,7 +16,7 @@ import { useEvents } from '@renderer/stores/use-events'
 import { CalendarEventModel } from '@renderer/types'
 import { addDays, differenceInDays, format, getUnixTime, startOfDay } from 'date-fns'
 import { useId, useState } from 'react'
-import { EventButton } from '@renderer/components/event-calendar/components/event-button'
+import { EventButton } from '@renderer/components/event-calendar/components/calendar/event-button'
 import { MIN_DAY_DIFF } from '@renderer/components/event-calendar/constants'
 
 

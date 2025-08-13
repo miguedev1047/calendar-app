@@ -1,7 +1,7 @@
 import { useCalendar } from '@renderer/stores/use-calendar'
+import { WeekList } from '@renderer/components/event-calendar/components/shared'
+import { SquareItem } from '@renderer/components/event-calendar/components/calendar'
 import { getMonthView } from '@renderer/components/event-calendar/helpers'
-import { WeekList } from '@renderer/components/event-calendar'
-import { SquareItem } from '@renderer/components/event-calendar'
 
 export function MonthlyView(): React.JSX.Element {
   const month = useCalendar((s) => s.month)
@@ -19,4 +19,3 @@ export function MonthlyView(): React.JSX.Element {
     </div>
   )
 }
-

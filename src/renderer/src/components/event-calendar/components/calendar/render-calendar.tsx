@@ -1,6 +1,6 @@
 import { useCalendar } from '@renderer/stores/use-calendar'
-import { CalendarDndProvider } from '@renderer/components/event-calendar/components/calendar-dnd-provider'
-import { MonthlyView } from '@renderer/components/event-calendar/components/monthly-view'
+import { CalendarDndProvider } from '@renderer/components/event-calendar/components/calendar/calendar-dnd-provider'
+import { MonthlyView } from '@renderer/components/event-calendar/components/calendar/monthly-view'
 
 export function RenderCalendar(): React.JSX.Element {
   const view = useCalendar((s) => s.view)

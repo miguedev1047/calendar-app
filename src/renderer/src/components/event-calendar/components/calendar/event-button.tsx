@@ -1,14 +1,22 @@
-
 import {
   getEventColor,
   getNormalColor,
   getShadowColor
-} from '@renderer/components/event-calendar/utils'
-import { EventButtonProps } from '@renderer/types'
+} from '@renderer/components/event-calendar/utils/'
 import { useIsMobile } from '@renderer/hooks/use-mobile'
 import { cn } from '@renderer/lib/utils'
 import { addHours, addMinutes, format, getTime, startOfDay } from 'date-fns'
 import { DEFAULT_START_HOUR } from '@renderer/components/event-calendar/constants'
+import { CalendarEventModel } from '@renderer/types'
+
+export type EventButtonProps = {
+  event: CalendarEventModel
+  isPastEvent?: boolean
+  isExtended?: boolean
+  isDraggable?: boolean
+  responsiveSize: 'dot' | 'normal'
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>, event: CalendarEventModel) => void
+}
 
 export function EventButton({
   event,
@@ -43,7 +51,7 @@ export function EventButton({
         data-extended={isExtended}
         className={cn(
           'text-xs w-full flex items-center data-[expired-event=true]:line-through data-[extended=true]:hidden',
-          size === 'dot' && isMobile && "max-md:hidden"
+          size === 'dot' && isMobile && 'max-md:hidden'
         )}
       >
         <p className="font-bold line-clamp-1">{title}</p>
