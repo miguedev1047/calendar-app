@@ -3,9 +3,10 @@ import { ThemeProvider } from '@renderer/components/theme-provider'
 import { Loader } from '@renderer/components/loader'
 import { Toaster } from '@renderer/components/ui/sonner'
 import { QueryClient } from '@tanstack/react-query'
-import { CalenderSidebarWrapper } from '@renderer/components/app-sidebar'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { EventDialog } from '@renderer/components/event-calendar'
+import { CalenderSidebarWrapper } from '@renderer/components/sidebar'
 
 export interface RouterAppContext {
   queryClient: QueryClient
@@ -25,8 +26,9 @@ function RootComponent(): React.JSX.Element {
         disableTransitionOnChange
         storageKey="vite-ui-theme"
       >
-        <CalenderSidebarWrapper >
+        <CalenderSidebarWrapper>
           {isFetching ? <Loader /> : <Outlet />}
+          <EventDialog />
         </CalenderSidebarWrapper>
         <Toaster position="bottom-right" />
         <TanStackRouterDevtools />
