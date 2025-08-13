@@ -14,7 +14,7 @@ export function AppSidebarHeader(): React.JSX.Element {
         <SidebarMenuItem>
           <SidebarMenuButton>
             <CalendarIcon />
-            <Link to='/' className="text-xl font-black">Notes Calendar</Link>
+            <Link to='/' className="text-xl font-black">Calendar App</Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
