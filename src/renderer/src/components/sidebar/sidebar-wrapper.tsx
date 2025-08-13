@@ -1,6 +1,6 @@
 import { SidebarProvider, SidebarInset } from '@renderer/components/animate-ui/radix/sidebar'
-import { Header } from '@renderer/components/header'
-import { AppSidebar } from './app-sidebar'
+import { Header } from '@renderer/components/header/header'
+import { AppSidebar } from '@renderer/components/sidebar'
 
 export function CalenderSidebarWrapper({ children }: React.PropsWithChildren): React.JSX.Element {
   return (
