@@ -4,6 +4,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton
 } from '@renderer/components/animate-ui/radix/sidebar'
+import { Link } from '@tanstack/react-router'
 import { CalendarIcon } from 'lucide-react'
 
 export function AppSidebarHeader(): React.JSX.Element {
@@ -13,7 +14,7 @@ export function AppSidebarHeader(): React.JSX.Element {
         <SidebarMenuItem>
           <SidebarMenuButton>
             <CalendarIcon />
-            <h2 className="text-xl font-black">Notes Calendar</h2>
+            <Link to='/' className="text-xl font-black">Notes Calendar</Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
