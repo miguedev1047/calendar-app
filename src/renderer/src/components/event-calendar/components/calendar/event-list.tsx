@@ -54,7 +54,7 @@ export function EventList(props: EventListProps): React.JSX.Element {
   return (
     <div
       className={cn(
-        'flex flex-col justify-between max-md:space-y-2 min-md:space-y-1 sm:min-h-12 md:min-h-24'
+        'flex flex-col justify-between max-md:space-y-2 min-md:space-y-1 sm:min-h-12 md:min-h-22'
       )}
     >
       <div className="max-md:flex max-md:gap-1 max-md:items-start min-md:space-y-1">
