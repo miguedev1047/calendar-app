@@ -11,29 +11,3 @@ export const actualStrMonth = format(now, 'MMMM')
 export const actualStrYear = format(now, 'yyyy')
 
 export const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
-export const TW_COLORS = [
-  { key: 'PINK', value: 'bg-pink-300' },
-  { key: 'FUCHSIA', value: 'bg-fuchsia-300' },
-  { key: 'PURPLE', value: 'bg-purple-300' },
-  { key: 'VIOLET', value: 'bg-violet-300' },
-  { key: 'INDIGO', value: 'bg-indigo-300' },
-  { key: 'BLUE', value: 'bg-blue-300' },
-  { key: 'CYAN', value: 'bg-cyan-300' },
-  { key: 'GREEN', value: 'bg-green-300' },
-  { key: 'YELLOW', value: 'bg-yellow-300' },
-  { key: 'ORANGE', value: 'bg-orange-300' }
-] as const
-
-export const TW_ENUMS = [
-  'PINK',
-  'FUCHSIA',
-  'PURPLE',
-  'VIOLET',
-  'INDIGO',
-  'BLUE',
-  'CYAN',
-  'GREEN',
-  'YELLOW',
-  'ORANGE'
-] as const

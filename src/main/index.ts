@@ -1,28 +1,15 @@
 import 'dotenv/config'
 import icon from '../../resources/icon.png?asset'
 
-import {
-  CloseWindow,
-  CreateEvent,
-  DeleteEvent,
-  GetEventByDay,
-  GetEvents,
-  MinimizeWindow,
-  ToggleMaximizeWindow,
-  UpdateEvent
-} from '../shared/models'
+import { CloseWindow, MinimizeWindow, ToggleMaximizeWindow } from '../shared/models'
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import { createEvent } from './services/event-service/create-event'
 import {
   handleCloseWindow,
   handleMinimizeWindow,
   toggleMaximizeWindow
 } from './lib/window-controls'
-import { getEventByDay, getEvents } from './services/event-service/get-events'
-import { updateEvent } from './services/event-service/update-event'
-import { deleteEvent } from './services/event-service/delete-event'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -57,14 +44,6 @@ function createWindow(): void {
 }
 
 app.on('ready', () => {
-  ipcMain.handle('get-events', (_event, ...args: Parameters<GetEvents>) => getEvents(...args))
-  ipcMain.handle('get-event-by-day', (_event, ...args: Parameters<GetEventByDay>) =>
-    getEventByDay(...args)
-  )
-  ipcMain.handle('create-event', (_event, ...args: Parameters<CreateEvent>) => createEvent(...args))
-  ipcMain.handle('update-event', (_event, ...args: Parameters<UpdateEvent>) => updateEvent(...args))
-  ipcMain.handle('delete-event', (_event, ...args: Parameters<DeleteEvent>) => deleteEvent(...args))
-
   ipcMain.on('close-window', (_event, ...args: Parameters<CloseWindow>) =>
     handleCloseWindow(...args)
   )
