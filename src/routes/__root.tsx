@@ -1,18 +1,12 @@
-import { createRootRouteWithContext, Outlet, useRouterState } from '@tanstack/react-router'
+import { createRootRoute, Outlet, useRouterState } from '@tanstack/react-router'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Loader } from '@/components/loader'
 import { Toaster } from '@/components/ui/sonner'
-import { QueryClient } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { CalenderSidebarWrapper } from '@/components/sidebar'
 import { EventDialog } from '@/components/event-calendar/components/shared'
 
-export interface RouterAppContext {
-  queryClient: QueryClient
-}
-
-export const Route = createRootRouteWithContext<RouterAppContext>()({
+export const Route = createRootRoute({
   component: RootComponent
 })
 
@@ -32,7 +26,6 @@ function RootComponent(): React.JSX.Element {
         </CalenderSidebarWrapper>
         <Toaster position="bottom-right" />
         <TanStackRouterDevtools />
-        <ReactQueryDevtools />
       </ThemeProvider>
     </>
   )
