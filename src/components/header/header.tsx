@@ -5,6 +5,11 @@ import { RippleButton } from '@/components/animate-ui/buttons/ripple-button'
 import { endOfMonth, format, startOfMonth } from 'date-fns'
 import { now } from '@/constants/index'
 import { useHeaderLogic } from '@/components/header/hooks'
+import type React from 'react'
+import { useCalendar } from '@/stores/use-calendar'
+import { useEvents } from '@/stores/use-events'
+import { getUpcomingEventsByDate } from '../event-calendar/helpers'
+import { Badge } from '../ui/badge'
 
 export function Header(): React.JSX.Element {
   const { strDate, onNextMonth, onPrevMonth, onGoToToday, calendarDate, handleCreateEvent } =
@@ -28,7 +33,10 @@ export function Header(): React.JSX.Element {
             </div>
           </div>
           <div className="space-y-2">
-            <h2 className="font-semibold">{strDate}</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="font-semibold">{strDate}</h2>
+              <TotalEvents />
+            </div>
             <div className="flex items-center gap-2">
               <RippleButton
                 onClick={onPrevMonth}
@@ -63,4 +71,12 @@ export function Header(): React.JSX.Element {
       </div>
     </header>
   )
+}
+
+export function TotalEvents(): React.JSX.Element {
+  const month = useCalendar((s) => s.month)
+  const year = useCalendar((s) => s.year)
+  const events = useEvents((s) => s.events)
+  const upcomingEvents = getUpcomingEventsByDate({ events, month, year })
+  return <Badge variant='outline'>{upcomingEvents.length} Events</Badge>
 }
