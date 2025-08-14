@@ -1,4 +1,4 @@
-import { AgendaRender } from '@/components/event-calendar/components/agenda'
+import { AgendaRender } from '@/components/event-calendar/components/shared'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/agenda')({
