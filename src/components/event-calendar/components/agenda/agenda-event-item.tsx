@@ -1,7 +1,7 @@
+import { type CalendarEventModel } from '@/types'
 import { getEventTime } from '@/components/event-calendar/helpers/get-event-time'
 import { cn } from '@/lib/utils'
-import { type CalendarEventModel } from '@/types'
-import { getEventColor } from '@/components/event-calendar/utils'
+import { getEventColor, isExpiredEvent } from '@/components/event-calendar/utils'
 import { ClockIcon, TextIcon } from 'lucide-react'
 import { useDialog } from '@/stores/use-dialog'
 
@@ -9,8 +9,10 @@ interface AgendaEventItemProps extends CalendarEventModel {}
 
 export function AgendaEventItem(props: AgendaEventItemProps): React.JSX.Element {
   const { title, startDate, endDate, startTime, endTime, color, description } = props
-
   const openDialog = useDialog((s) => s.openDialog)
+  const eventStartTime = getEventTime({ date: startDate, mode: 'start-time', startTime })
+  const eventEndTime = getEventTime({ date: endDate, mode: 'end-time', endTime })
+  const expiredEvent = isExpiredEvent({ date: endDate, endTime })
 
   const handleClick = (): void => {
     openDialog({ isOpen: true, mode: 'edit', event: { ...props } })
@@ -18,8 +20,13 @@ export function AgendaEventItem(props: AgendaEventItemProps): React.JSX.Element 
 
   return (
     <button
+      data-expired-event={expiredEvent}
       onClick={handleClick}
-      className={cn('w-full space-y-4 p-4 rounded-md text-sm cursor-pointer', getEventColor(color))}
+      className={cn(
+        'w-full space-y-2 p-4 rounded-md text-sm cursor-pointer',
+        'data-[expired-event=true]:line-through',
+        getEventColor(color)
+      )}
     >
       <h2 className="text-start font-semibold">{title}</h2>
 
@@ -27,9 +34,9 @@ export function AgendaEventItem(props: AgendaEventItemProps): React.JSX.Element 
         <div className="flex items-center gap-2">
           <ClockIcon className="size-4" />
           <p className="font-semibold">
-            <span>{getEventTime({ date: startDate, mode: 'start-time', startTime, endTime })}</span>
+            <span>{eventStartTime}</span>
             <span> - </span>
-            <span>{getEventTime({ date: endDate, mode: 'end-time', startTime, endTime })}</span>
+            <span>{eventEndTime}</span>
           </p>
         </div>
         {description && (

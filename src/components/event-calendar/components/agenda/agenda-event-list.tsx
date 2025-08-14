@@ -1,6 +1,5 @@
 import { type CalendarEventModel } from '@/types'
 import { AgendaEventItem } from '@/components/event-calendar/components/agenda'
-import { getUpcomingEventsByDate } from '../../helpers'
 
 interface AgendaEventListProps {
   events: CalendarEventModel[]
