@@ -1,0 +1,15 @@
+import { useCalendar } from '@/stores/use-calendar'
+import { CalendarDndProvider } from '@/components/event-calendar/components/calendar/calendar-dnd-provider'
+import { MonthlyView } from '@/components/event-calendar/components/calendar/monthly-view'
+
+export function RenderCalendar(): React.JSX.Element {
+  const view = useCalendar((s) => s.view)
+
+  return (
+    <div className="space-y-4 flex-1">
+      <CalendarDndProvider>
+        {view === 'month' && <MonthlyView />}
+      </CalendarDndProvider>
+    </div>
+  )
+}
