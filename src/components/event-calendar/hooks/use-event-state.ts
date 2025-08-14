@@ -12,10 +12,13 @@ export function useEventState(
   isPastEvent: boolean
 } {
   const { startDate, endDate, endTime } = event
+  // Disable handle drag
   const currentCalendarDate = calendar[index]
   const currentDate = format(currentCalendarDate.date, 'yyyy-MM-dd')
   const eventStartDate = format(startDate!, 'yyyy-MM-dd')
   const disableDrag = eventStartDate !== currentDate
+
+  // Check if event has expired
   const isPastEvent = isExpiredEvent({ date: endDate, endTime })
   return { disableDrag, isPastEvent }
 }
