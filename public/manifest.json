@@ -1,0 +1,60 @@
+{
+  "name": "Notes Calendar",
+  "short_name": "Calendar",
+  "description": "A modern and intuitive calendar application for organizing events, managing your agenda, and keeping track of your notes.",
+  "version": "1.0.0",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Create New Event",
+      "short_name": "New Event",
+      "description": "Quickly create a new calendar event",
+      "url": "/?action=new-event",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "32x32"
+        }
+      ]
+    },
+    {
+      "name": "View Agenda",
+      "short_name": "Agenda",
+      "description": "View your upcoming events",
+      "url": "/agenda",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "32x32"
+        }
+      ]
+    },
+    {
+      "name": "Notes",
+      "short_name": "Notes",
+      "description": "Access your notes",
+      "url": "/notes",
+      "icons": [
+        {
+          "src": "/favicon.ico",
+          "sizes": "32x32"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}
