@@ -1,13 +1,9 @@
-import {
-  getEventColor,
-  getNormalColor,
-  getShadowColor
-} from '@/components/event-calendar/utils/'
+import { type CalendarEventModel } from '@/types'
+import { getEventColor, getNormalColor, getShadowColor } from '@/components/event-calendar/utils/'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { cn } from '@/lib/utils'
-import { addHours, addMinutes, format, getTime, startOfDay } from 'date-fns'
 import { DEFAULT_START_HOUR } from '@/components/event-calendar/constants'
-import { type CalendarEventModel } from '@/types'
+import { getEventTime } from '@/components/event-calendar/helpers'
 
 export type EventButtonProps = {
   event: CalendarEventModel
@@ -28,11 +24,7 @@ export function EventButton({
 }: EventButtonProps): React.JSX.Element {
   const { title, color, startDate, startTime = DEFAULT_START_HOUR } = event
   const isMobile = useIsMobile()
-
-  const now = new Date()
-  const addTimeHour = addHours(startOfDay(startDate ?? now), startTime.hour)
-  const addTimeMinute = addMinutes(addTimeHour, startTime?.minute)
-  const time = format(getTime(addTimeMinute), 'h:mm aa')
+  const time = getEventTime({ date: startDate, mode: 'start-time', startTime })
 
   return (
     <button
