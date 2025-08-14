@@ -7,7 +7,7 @@ export type ExpiredEvent = {
 }
 
 export function isExpiredEvent(props: ExpiredEvent): boolean {
-  const { date, endTime } = props
+  const { date, endTime = DEFAULT_END_HOUR } = props
   const now = new Date()
   const today = startOfDay(now)
   const eventEndDay = startOfDay(date ?? now)
@@ -18,8 +18,8 @@ export function isExpiredEvent(props: ExpiredEvent): boolean {
 
   const currentTime = { hour: getHours(now), minute: getMinutes(now) }
   if (
-    currentTime.hour > (endTime?.hour ?? DEFAULT_END_HOUR.hour) ||
-    (currentTime.hour === endTime?.hour && currentTime.minute >= endTime.minute)
+    currentTime.hour > endTime.hour ||
+    (currentTime.hour === endTime.hour && currentTime.minute >= endTime.minute)
   ) {
     return true
   }
