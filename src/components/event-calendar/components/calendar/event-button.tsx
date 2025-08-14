@@ -30,9 +30,9 @@ export function EventButton({
     <button
       onClick={(e) => onClick?.(e, event)}
       className={cn(
-        'flex items-center w-full h-6 p-1 text-left rounded relative',
-        size === 'dot' && isMobile && getNormalColor(color),
+        'flex items-center w-full h-6 p-1 text-left rounded relative select-none',
         size === 'normal' && getEventColor(color),
+        size === 'dot' && isMobile && getNormalColor(color),
         size === 'dot' && isMobile && 'max-md:size-2 max-md:rounded-full max-md:p-0',
         !isMobile && getEventColor(color),
         isDraggable && getShadowColor(color)
@@ -47,7 +47,7 @@ export function EventButton({
         )}
       >
         <p className="font-bold line-clamp-1">{title}</p>
-        <p className="flex flex-1 justify-end opacity-80 line-clamp-1">{time}</p>
+        <p className="hidden flex-1 justify-end opacity-80 line-clamp-1 xl:flex">{time}</p>
       </h4>
     </button>
   )
