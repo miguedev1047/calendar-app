@@ -20,7 +20,7 @@ export function Header(): React.JSX.Element {
       </div>
 
       <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-        <TotalEvents />
+        <TotalEvents className="sm:hidden" />
         <TodayButton />
         <CreateButton />
         <ThemeToggle />

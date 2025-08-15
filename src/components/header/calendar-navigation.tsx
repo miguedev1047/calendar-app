@@ -25,9 +25,7 @@ export function CalendarNavigation(): React.JSX.Element {
       <div className="space-y-1 md:space-y-2">
         <div className="flex items-center gap-2">
           <h2 className="font-semibold text-sm md:text-base">{strDate}</h2>
-          <div className="hidden md:block">
-            <TotalEvents />
-          </div>
+          <TotalEvents className='hidden md:block' />
         </div>
         <div className="flex items-center gap-1 md:gap-2">
           <RippleButton
