@@ -1,2 +1,6 @@
 export { Header } from './header'
-export { type UseHeaderLogic } from './types'
+export { CalendarNavigation } from './calendar-navigation'
+export { CreateButton } from './create-button'
+export { TotalEvents } from './total-events'
+export { ThemeToggle } from './theme-toggle'
+export { TodayButton } from './today-button'
