@@ -1,34 +1,30 @@
-# calendar-app
+# Notes Calendar
 
-An Electron application with React and TypeScript
+A modern and intuitive calendar application for organizing events, managing your agenda, and keeping track of your notes all in one place.
 
-## Recommended IDE Setup
+![Calendar Demo](src/assets/demo/demo-1.png)
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+## ✨ Features
 
-## Project Setup
+- **📅 Event Management**: Create, edit, and delete calendar events with detailed information
+- **📝 Rich Notes**: Write and organize notes with rich text formatting using a powerful editor
+- **🎨 Color Coding**: Organize events and notes with customizable color themes
+- **📱 Responsive Design**: Seamless experience across desktop and mobile devices
+- **🌙 Dark Mode**: Toggle between light and dark themes
+- **🔄 Drag & Drop**: Reorder notes with intuitive drag and drop functionality
+- **📊 Agenda View**: Clean agenda layout showing upcoming events
+- **💾 Persistent Storage**: All data is automatically saved locally
 
-### Install
+![Notes Demo](src/assets/demo/demo-2.png)
 
-```bash
-$ npm install
-```
+## 🚀 Tech Stack
 
-### Development
-
-```bash
-$ npm run dev
-```
-
-### Build
-
-```bash
-# For windows
-$ npm run build:win
-
-# For macOS
-$ npm run build:mac
-
-# For Linux
-$ npm run build:linux
-```
+- **[React](https://reactjs.org/)** - UI library for building user interfaces
+- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript development
+- **[Zustand](https://zustand-demo.pmnd.rs/)** - Lightweight state management
+- **[Shadcn/ui](https://ui.shadcn.com/)** - Beautiful and accessible UI components
+- **[Motion](https://motion.dev/)** - Smooth animations and transitions
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[Tanstack Router](https://tanstack.com/router)** - Type-safe routing
+- **[Tiptap](https://tiptap.dev/)** - Rich text editor for notes
+- **[date-fns](https://date-fns.org/)** - Modern JavaScript date utility library
