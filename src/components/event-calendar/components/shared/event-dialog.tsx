@@ -21,8 +21,9 @@ import {
   DEFAULT_START_HOUR,
   TW_NORMAL_COLORS
 } from '@/components/event-calendar/constants'
+import { type TimeValue } from 'react-aria-components'
 import { useMemo, useTransition } from 'react'
-import { useDialog } from '@/stores/use-dialog'
+import { useEventDialog } from '@/stores/use-event-dialog'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
@@ -35,22 +36,21 @@ import { DatePicker } from '@/components/ui/date-picker'
 import { formatUnixDate } from '@/helpers/format-date'
 import { useEvents } from '@/stores/use-events'
 import { cn } from '@/lib/utils'
-import { eventSchema, type EventSchema } from '@/components/event-calendar/schemas'
+import { eventSchema, type EventSchema } from '@/schemas'
 import { RippleButton } from '@/components/animate-ui/buttons/ripple-button'
 import { TimeInput } from '@/components/ui/time-input'
-import { type TimeValue } from 'react-aria-components'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { newDate } from '@/helpers/new-date'
 
 export function EventDialog(): React.JSX.Element {
-  const calendarData = useDialog((s) => s.calendarData)
-  const openDialog = useDialog((s) => s.openDialog)
-  const isOpen = useDialog((s) => s.isOpen)
-  const isEditing = useDialog((s) => s.mode === 'edit')
+  const calendarData = useEventDialog((s) => s.calendarData)
+  const openEventDialog = useEventDialog((s) => s.openEventDialog)
+  const isOpen = useEventDialog((s) => s.isOpen)
+  const isEditing = useEventDialog((s) => s.mode === 'edit')
   const keyDate = formatUnixDate(calendarData?.date)
 
   const handleClick = (): void => {
-    openDialog({ isOpen: !isOpen, mode: 'create' })
+    openEventDialog({ isOpen: !isOpen, mode: 'create' })
   }
 
   return (
@@ -82,11 +82,10 @@ export function EventDialog(): React.JSX.Element {
 export function EventForm(): React.JSX.Element {
   const addEvent = useEvents((s) => s.addEvent)
   const updateEvent = useEvents((s) => s.updateEvent)
-  const calendarData = useDialog((s) => s.calendarData)
-  const eventData = useDialog((s) => s.eventData)
-  const isEditing = useDialog((s) => s.mode === 'edit')
-  const closeDialog = useDialog((s) => s.closeDialog)
-
+  const calendarData = useEventDialog((s) => s.calendarData)
+  const eventData = useEventDialog((s) => s.eventData)
+  const isEditing = useEventDialog((s) => s.mode === 'edit')
+  const closeEventDialog = useEventDialog((s) => s.closeEventDialog)
   const calendarDate = getDateFromCalendarData(calendarData)
   const defaultColor = useMemo(() => randomColor(), [])
 
@@ -118,7 +117,7 @@ export function EventForm(): React.JSX.Element {
     const action = isEditing ? updateEvent : addEvent
     action(values)
     form.reset()
-    closeDialog()
+    closeEventDialog()
     toast.success(`Event ${isEditing ? 'edited' : 'created'} successfully!`)
   })
 
@@ -273,9 +272,9 @@ export function EventForm(): React.JSX.Element {
 
 export function EventDelete(): React.JSX.Element | null {
   const [isPending, startTransition] = useTransition()
-  const eventData = useDialog((s) => s.eventData)
-  const closeDialog = useDialog((s) => s.closeDialog)
-  const isEditing = useDialog((s) => s.mode === 'edit')
+  const eventData = useEventDialog((s) => s.eventData)
+  const closeEventDialog = useEventDialog((s) => s.closeEventDialog)
+  const isEditing = useEventDialog((s) => s.mode === 'edit')
   const removeEvent = useEvents((s) => s.removeEvent)
 
   if (!isEditing) return null
@@ -285,7 +284,7 @@ export function EventDelete(): React.JSX.Element | null {
       if (!eventData?.id) return
       removeEvent(eventData.id)
       toast.success('Event deleted successfully!')
-      closeDialog()
+      closeEventDialog()
     })
   }
 
