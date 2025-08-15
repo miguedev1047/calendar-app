@@ -22,7 +22,7 @@ const usePopover = (): PopoverContextType => {
 
 type Side = 'top' | 'bottom' | 'left' | 'right'
 
-const getInitialPosition = (side: Side): ReturnType<typeof getInitialPosition> => {
+const getInitialPosition = (side: Side): { x?: number; y?: number; } => {
   switch (side) {
     case 'top':
       return { y: 15 }
