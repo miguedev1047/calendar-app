@@ -1,20 +1,19 @@
-import { filterEventsByDate } from '@/helpers/filter-events'
-import { useDialog } from '@/stores/use-dialog'
-import { useEvents } from '@/stores/use-events'
 import { type CalendarEventModel } from '@/types'
+import { filterEventsByDate } from '@/helpers/filter-events'
+import { useEvents } from '@/stores/use-events'
 import { useCallback, useMemo } from 'react'
+import { useEventDialog } from '@/stores/use-event-dialog'
+
+export type MouseEvent = React.MouseEvent<HTMLButtonElement | HTMLDivElement>
 
 export type UseEventListLogic = {
   filteredEvents: CalendarEventModel[]
-  handleUpdateEvent: (
-    e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>,
-    event: CalendarEventModel
-  ) => void
+  handleUpdateEvent: (e: MouseEvent, event: CalendarEventModel) => void
 }
 
 export function useEventListLogic(date: Date): UseEventListLogic {
   const events = useEvents((s) => s.events)
-  const openDialog = useDialog((s) => s.openDialog)
+  const openEventDialog = useEventDialog((s) => s.openEventDialog)
 
   const filteredEvents = useMemo(
     () => filterEventsByDate({ opts: { date, events } }),
@@ -22,11 +21,11 @@ export function useEventListLogic(date: Date): UseEventListLogic {
   )
 
   const handleUpdateEvent = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>, event: CalendarEventModel): void => {
+    (e: MouseEvent, event: CalendarEventModel): void => {
       e.stopPropagation()
-      openDialog({ isOpen: true, event, mode: 'edit' })
+      openEventDialog({ isOpen: true, event, mode: 'edit' })
     },
-    [openDialog]
+    [openEventDialog]
   )
 
   return { filteredEvents, handleUpdateEvent }

@@ -1,5 +1,5 @@
 import { TW_ENUMS } from '@/components/event-calendar/constants'
-import { type EventSchema } from '@/components/event-calendar/schemas'
+import { type EventSchema } from '@/schemas'
 
 export type TwEnums = (typeof TW_ENUMS)[number]
 
