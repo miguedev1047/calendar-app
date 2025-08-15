@@ -3,19 +3,20 @@ import { getEventTime } from '@/components/event-calendar/helpers/get-event-time
 import { cn } from '@/lib/utils'
 import { getEventColor, isExpiredEvent } from '@/components/event-calendar/utils'
 import { ClockIcon, TextIcon } from 'lucide-react'
-import { useDialog } from '@/stores/use-dialog'
+import { useEventDialog } from '@/stores/use-event-dialog'
 
 interface AgendaEventItemProps extends CalendarEventModel {}
 
 export function AgendaEventItem(props: AgendaEventItemProps): React.JSX.Element {
   const { title, startDate, endDate, startTime, endTime, color, description } = props
-  const openDialog = useDialog((s) => s.openDialog)
+  const openEventDialog = useEventDialog((s) => s.openEventDialog)
   const eventStartTime = getEventTime({ date: startDate, mode: 'start-time', startTime })
   const eventEndTime = getEventTime({ date: endDate, mode: 'end-time', endTime })
   const expiredEvent = isExpiredEvent({ date: endDate, endTime })
 
   const handleClick = (): void => {
-    openDialog({ isOpen: true, mode: 'edit', event: { ...props } })
+    const event = { ...props }
+    openEventDialog({ isOpen: true, mode: 'edit', event })
   }
 
   return (

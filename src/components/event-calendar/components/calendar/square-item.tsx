@@ -1,6 +1,6 @@
 import { type CalendarProps } from '@/components/event-calendar/types'
 import { cn } from '@/lib/utils'
-import { useDialog } from '@/stores/use-dialog'
+import { useEventDialog } from '@/stores/use-event-dialog'
 import { EventList } from '@/components/event-calendar/components/calendar'
 import { useDroppable } from '@dnd-kit/core'
 import { format } from 'date-fns'
@@ -15,7 +15,7 @@ export function SquareItem(props: SquareItemProps): React.JSX.Element {
   const { data } = props
   const { today, date, day, inCurrentMonth } = data
 
-  const openDialog = useDialog((s) => s.openDialog)
+  const openEventDialog = useEventDialog((s) => s.openEventDialog)
 
   const { setNodeRef, isOver } = useDroppable({
     id: `${format(date, 'yyyy-MM-dd')}`,
@@ -23,7 +23,7 @@ export function SquareItem(props: SquareItemProps): React.JSX.Element {
   })
 
   const handleClick = (): void => {
-    openDialog({ isOpen: true, calendar: data, mode: 'create' })
+    openEventDialog({ isOpen: true, calendar: data, mode: 'create' })
   }
 
   return (
