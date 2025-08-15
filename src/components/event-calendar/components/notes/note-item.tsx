@@ -31,11 +31,6 @@ export function NoteItem(props: NoteItemProps): React.JSX.Element {
     openNoteDialog({ isOpen: true, mode: 'edit', note: { ...props } })
   }
 
-  const getTextPreview = (html: string, maxLength: number = 100): string => {
-    const text = html.replace(/<[^>]*>/g, '')
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text
-  }
-
   const formatDate = (date: Date | undefined): string => {
     if (!date) return ''
     const dateObj = date instanceof Date ? date : new Date(date)
