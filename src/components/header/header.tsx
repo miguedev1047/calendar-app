@@ -10,6 +10,7 @@ import { useCalendar } from '@/stores/use-calendar'
 import { useEvents } from '@/stores/use-events'
 import { getUpcomingEventsByDate } from '../event-calendar/helpers'
 import { Badge } from '../ui/badge'
+import { useLocation } from '@tanstack/react-router'
 
 export function Header(): React.JSX.Element {
   const { strDate, onNextMonth, onPrevMonth, onGoToToday, calendarDate, handleCreateEvent } =
@@ -64,12 +65,35 @@ export function Header(): React.JSX.Element {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <RippleButton onClick={handleCreateEvent}>
-          <PlusIcon />
-          <span> New event</span>
-        </RippleButton>
+        <CreateButton />
       </div>
     </header>
+  )
+}
+
+export function CreateButton(): React.JSX.Element {
+  const { handleCreateEvent, handleCreateNote } = useHeaderLogic()
+  const { pathname } = useLocation()
+
+  const EVENTS_ROUTES = ['/', '/agenda']
+  const isOnEventsRoutes = EVENTS_ROUTES.some((route) => pathname === route)
+  const isOnNoteRoute = pathname === '/notes'
+
+  return (
+    <div className="flex items-center gap-4">
+      {isOnEventsRoutes && (
+        <RippleButton onClick={handleCreateEvent}>
+          <PlusIcon />
+          <span>New event</span>
+        </RippleButton>
+      )}
+      {isOnNoteRoute && (
+        <RippleButton onClick={handleCreateNote}>
+          <PlusIcon />
+          <span>New note</span>
+        </RippleButton>
+      )}
+    </div>
   )
 }
 
@@ -78,5 +102,5 @@ export function TotalEvents(): React.JSX.Element {
   const year = useCalendar((s) => s.year)
   const events = useEvents((s) => s.events)
   const upcomingEvents = getUpcomingEventsByDate({ events, month, year })
-  return <Badge variant='outline'>{upcomingEvents.length} Events</Badge>
+  return <Badge variant="outline">{upcomingEvents.length} Events</Badge>
 }

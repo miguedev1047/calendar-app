@@ -1,6 +1,7 @@
 import { useCalendar } from '@/stores/use-calendar'
-import {type UseHeaderLogic } from '@/components/header/types'
-import { useDialog } from '@/stores/use-dialog'
+import { type UseHeaderLogic } from '@/components/header/types'
+import { useNoteDialog } from '@/stores/use-note-dialog'
+import { useEventDialog } from '@/stores/use-event-dialog'
 
 export function useHeaderLogic(): UseHeaderLogic {
   const strDate = useCalendar((s) => s.strDate())
@@ -9,12 +10,16 @@ export function useHeaderLogic(): UseHeaderLogic {
   const onNextMonth = useCalendar((s) => s.nextMonth)
   const onPrevMonth = useCalendar((s) => s.prevMonth)
   const onGoToToday = useCalendar((s) => s.goToToday)
-  const openDialog = useDialog((s) => s.openDialog)
-
+  const openEventDialog = useEventDialog((s) => s.openEventDialog)
+  const openNoteDialog = useNoteDialog(s => s.openNoteDialog )
   const calendarDate = new Date(year, month)
 
   const handleCreateEvent = (): void => {
-    openDialog({ isOpen: true, mode: 'create' })
+    openEventDialog({ isOpen: true, mode: 'create' })
+  }
+
+  const handleCreateNote = (): void => {
+    openNoteDialog({ isOpen: true, mode: 'create' })
   }
 
   return {
@@ -25,6 +30,7 @@ export function useHeaderLogic(): UseHeaderLogic {
     onPrevMonth,
     onGoToToday,
     calendarDate,
-    handleCreateEvent
+    handleCreateEvent,
+    handleCreateNote,
   }
 }
