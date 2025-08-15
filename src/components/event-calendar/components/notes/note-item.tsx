@@ -89,7 +89,8 @@ export function NoteItem(props: NoteItemProps): React.JSX.Element {
 
         {description && (
           <div className="text-sm text-muted-foreground line-clamp-3">
-            {getTextPreview(description)}
+            {/* This is a partial solution. I recommend not doing this. This needs to be glossed over somehow. */}
+            <p dangerouslySetInnerHTML={{ __html: description }} />
           </div>
         )}
 
