@@ -1,15 +1,16 @@
 import { SidebarGroup, SidebarGroupContent } from '@/components/animate-ui/radix/sidebar'
 import { Calendar } from '@/components/ui/calendar'
 import { useCalendar } from '@/stores/use-calendar'
-import { useDialog } from '@/stores/use-dialog'
+import { useEventDialog } from '@/stores/use-event-dialog'
 
 export function SidebarDatePicker(): React.JSX.Element {
   const handlePrevMonth = useCalendar((s) => s.prevMonth)
   const handleNextMonth = useCalendar((s) => s.nextMonth)
-  const openDialog = useDialog((s) => s.openDialog)
+  const openEventDialog = useEventDialog((s) => s.openEventDialog)
 
   const handleOpen = (date: Date): void => {
-    openDialog({ isOpen: true, event: { endDate: date, startDate: date }, mode: 'create' })
+    const event = { endDate: date, startDate: date }
+    openEventDialog({ isOpen: true, event, mode: 'create' })
   }
 
   return (
