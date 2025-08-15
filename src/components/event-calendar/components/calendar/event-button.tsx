@@ -47,7 +47,7 @@ export function EventButton({
         )}
       >
         <p className="font-bold line-clamp-1">{title}</p>
-        <p className="hidden flex-1 justify-end opacity-80 line-clamp-1 xl:flex">{time}</p>
+        <p className="hidden flex-1 justify-end opacity-80 truncate xl:flex">{time}</p>
       </h4>
     </button>
   )
