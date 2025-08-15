@@ -1,4 +1,4 @@
-import { AgendaRender } from '@/components/event-calendar/components/shared'
+import { RenderAgenda } from '@/components/event-calendar/components/shared'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/agenda')({
@@ -7,8 +7,8 @@ export const Route = createFileRoute('/agenda')({
 
 function RouteComponent(): React.JSX.Element {
   return (
-    <div>
-      <AgendaRender />
+    <div className="space-y-4 w-full flex flex-1">
+      <RenderAgenda />
     </div>
   )
 }
