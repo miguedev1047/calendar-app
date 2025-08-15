@@ -6,12 +6,12 @@ import { useHeaderLogic } from '@/components/header/hooks'
 import { TotalEvents } from '@/components/header'
 
 export function CalendarNavigation(): React.JSX.Element {
-  const { strDate, onNextMonth, onPrevMonth, onGoToToday, calendarDate } = useHeaderLogic()
+  const { strDate, onNextMonth, onPrevMonth, handleGoToToday, calendarDate } = useHeaderLogic()
 
   return (
     <div className="flex items-center gap-2 sm:gap-4">
-      <div
-        onClick={onGoToToday}
+      <button
+        onClick={handleGoToToday}
         className="hidden md:flex flex-col size-12 md:size-16 border bg-card rounded-md overflow-hidden cursor-pointer hover:shadow-sm transition-shadow"
       >
         <div className="flex-1 flex justify-center items-center bg-primary text-background">
@@ -20,7 +20,7 @@ export function CalendarNavigation(): React.JSX.Element {
         <div className="flex-1 flex justify-center items-center">
           <p className="uppercase font-bold text-center text-sm md:text-base">{format(now, 'd')}</p>
         </div>
-      </div>
+      </button>
 
       <div className="space-y-1 md:space-y-2">
         <div className="flex items-center gap-2">

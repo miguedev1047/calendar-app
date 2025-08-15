@@ -5,7 +5,7 @@ export type UseHeaderLogic = {
   calendarDate: Date
   onNextMonth: () => void
   onPrevMonth: () => void
-  onGoToToday: () => void
+  handleGoToToday: () => void
   handleCreateEvent: () => void
   handleCreateNote: () => void
 }

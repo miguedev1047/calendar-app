@@ -2,6 +2,7 @@ import { useCalendar } from '@/stores/use-calendar'
 import { type UseHeaderLogic } from '@/components/header/types'
 import { useNoteDialog } from '@/stores/use-note-dialog'
 import { useEventDialog } from '@/stores/use-event-dialog'
+import { useNavigate } from '@tanstack/react-router'
 
 export function useHeaderLogic(): UseHeaderLogic {
   const strDate = useCalendar((s) => s.strDate())
@@ -12,6 +13,7 @@ export function useHeaderLogic(): UseHeaderLogic {
   const onGoToToday = useCalendar((s) => s.goToToday)
   const openEventDialog = useEventDialog((s) => s.openEventDialog)
   const openNoteDialog = useNoteDialog(s => s.openNoteDialog )
+  const navigate = useNavigate()
   const calendarDate = new Date(year, month)
 
   const handleCreateEvent = (): void => {
@@ -22,13 +24,18 @@ export function useHeaderLogic(): UseHeaderLogic {
     openNoteDialog({ isOpen: true, mode: 'create' })
   }
 
+  const handleGoToToday = (): void => {
+    onGoToToday()
+    navigate({ to: '/' })
+  }
+
   return {
     strDate,
     month,
     year,
     onNextMonth,
     onPrevMonth,
-    onGoToToday,
+    handleGoToToday,
     calendarDate,
     handleCreateEvent,
     handleCreateNote,

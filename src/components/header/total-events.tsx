@@ -10,7 +10,7 @@ export function TotalEvents(): React.JSX.Element {
   const upcomingEvents = getUpcomingEventsByDate({ events, month, year })
   
   return (
-    <Badge variant="outline" className="text-xs">
+    <Badge variant="outline" className="text-xs sm:hidden">
       <span className="hidden sm:inline">{upcomingEvents.length} Events</span>
       <span className="sm:hidden">{upcomingEvents.length}</span>
     </Badge>
