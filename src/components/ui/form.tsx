@@ -7,7 +7,6 @@ import {
   useFormContext,
   useFormState,
   type ControllerProps,
-  type FieldError,
   type FieldPath,
   type FieldValues
 } from 'react-hook-form'

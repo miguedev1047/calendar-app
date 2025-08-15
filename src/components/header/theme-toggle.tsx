@@ -9,7 +9,7 @@ import {
 } from '@/components/animate-ui/radix/dropdown-menu'
 
 export function ThemeToggle(): React.JSX.Element {
-  const { setTheme, theme } = useTheme()
+  const { setTheme } = useTheme()
 
   return (
     <DropdownMenu>
