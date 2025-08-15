@@ -1,4 +1,3 @@
-import { type CalendarBase } from '@/components/event-calendar/types'
 import type { CalendarNoteModel } from '@/types'
 import { create } from 'zustand'
 
