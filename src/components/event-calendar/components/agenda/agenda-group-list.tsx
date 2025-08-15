@@ -18,13 +18,12 @@ export function AgendaGroupList(): React.JSX.Element {
 
   return (
     <div className="space-y-8 w-full relative">
-      {upcomingEvents.map((item, index) => (
+      {upcomingEvents.map((item) => (
         <MotionEffect
           key={getUnixTime(item.date)}
           fade
           blur="10px"
           transition={{ duration: 0.5, ease: 'easeInOut' }}
-          delay={0.5 + index * 0.1}
           inView
         >
           <AgendaGroupItem {...item} />
