@@ -1,6 +1,6 @@
+import { EXAMPLE_EVENTS } from '@/constants'
 import { type CalendarEventModel } from '@/types'
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 
 interface EventsState {
   events: CalendarEventModel[]
@@ -10,21 +10,16 @@ interface EventsState {
   updateEvent: (updatedEvent: CalendarEventModel) => void
 }
 
-export const useEvents = create<EventsState>()(
-  persist(
-    (set) => ({
-      events: [],
-      setEvents: (events) => set({ events }),
-      addEvent: (event) => set((state) => ({ events: [...state.events, event] })),
-      removeEvent: (eventId) =>
-        set((state) => ({
-          events: state.events.filter((event) => event.id !== eventId)
-        })),
-      updateEvent: (updatedEvent) =>
-        set((state) => ({
-          events: state.events.map((event) => (event.id === updatedEvent.id ? updatedEvent : event))
-        }))
-    }),
-    { name: 'events-storage',  }
-  )
-)
+export const useEvents = create<EventsState>((set) => ({
+  events: EXAMPLE_EVENTS,
+  setEvents: (events) => set({ events }),
+  addEvent: (event) => set((state) => ({ events: [...state.events, event] })),
+  removeEvent: (eventId) =>
+    set((state) => ({
+      events: state.events.filter((event) => event.id !== eventId)
+    })),
+  updateEvent: (updatedEvent) =>
+    set((state) => ({
+      events: state.events.map((event) => (event.id === updatedEvent.id ? updatedEvent : event))
+    }))
+}))
