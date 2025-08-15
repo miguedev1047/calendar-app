@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { CalenderSidebarWrapper } from '@/components/sidebar'
 import { EventDialog } from '@/components/event-calendar/components/shared'
+import { NoteDialog } from '@/components/event-calendar/components/shared/note-dialog'
 
 export const Route = createRootRoute({
   component: RootComponent
@@ -22,7 +23,9 @@ function RootComponent(): React.JSX.Element {
       >
         <CalenderSidebarWrapper>
           {isFetching ? <Loader /> : <Outlet />}
+          
           <EventDialog />
+          <NoteDialog />
         </CalenderSidebarWrapper>
         <Toaster position="bottom-right" />
         <TanStackRouterDevtools />
